@@ -330,9 +330,9 @@ fr_process_finalize (GObject *object)
 	process = FR_PROCESS (object);
 
 	fr_process_stop_priv (process, FALSE);
-	fr_process_clear (process);
 
-	g_ptr_array_free (process->priv->comm, FALSE);
+	g_ptr_array_foreach (process->priv->comm, (GFunc) fr_command_info_free, NULL);
+	g_ptr_array_free (process->priv->comm, TRUE);
 
 	fr_channel_data_free (&process->out);
 	fr_channel_data_free (&process->err);
